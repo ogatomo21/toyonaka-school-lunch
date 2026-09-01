@@ -117,6 +117,8 @@ npm run build
 npm run deploy:dry
 ```
 
+`wrangler.jsonc` またはWranglerのバージョンを変更した場合は、`npm run types:generate` を実行し、更新された `worker-configuration.d.ts` も一緒にcommitしてください。CIの `npm run check` は生成型が現在の設定・依存バージョンと一致しているか検査します。
+
 ## Cloudflare Workersへの公開
 
 `wrangler.jsonc` には `toyonaka-lunch.ogtm.dev` をCustom Domainとして設定しています。`ogtm.dev` が同じCloudflareアカウントの有効なZoneに含まれ、同名の競合DNSレコードがないことを確認してください。
