@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+node_modules/
+dist/
+.wrangler/
+.playwright-cli/
+output/playwright/
+coverage/
+.dev.vars*
+.env*

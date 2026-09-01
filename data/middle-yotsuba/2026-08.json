@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "year": 2026,
+  "month": 8,
+  "level": "middle_school",
+  "block": "yotsuba_late",
+  "days": [
+    {
+      "date": "2026-08-26",
+      "weekday": "水",
+      "status": "scheduled",
+      "menu": [
+        "ごはん",
+        "スープカレー",
+        "（揚）揚げかぼちゃ",
+        "枝豆"
+      ],
+      "beverages": [
+        "牛乳"
+      ],
+      "tags": [
+        "＜2学期＞"
+      ]
+    },
+    {
+      "date": "2026-08-27",
+      "weekday": "木",
+      "status": "scheduled",
+      "menu": [
+        "コッペパン",
+        "肉団子のケチャップ煮",
+        "（揚）白身魚のフリッター",
+        "ウインナーとコーンのソテー"
+      ],
+      "beverages": [
+        "牛乳"
+      ]
+    },
+    {
+      "date": "2026-08-28",
+      "weekday": "金",
+      "status": "scheduled",
+      "menu": [
+        "ごはん",
+        "うどん汁",
+        "(焼)コロコロ厚揚げのチリソースかけ",
+        "豚肉のしょうが炒め"
+      ],
+      "beverages": [
+        "牛乳"
+      ]
+    },
+    {
+      "date": "2026-08-31",
+      "weekday": "月",
+      "status": "scheduled",
+      "menu": [
+        "ごはん",
+        "担担ビーフン",
+        "（焼）鶏肉のステーキソースかけ",
+        "カラフルゼリー(重量)"
+      ],
+      "beverages": [
+        "牛乳"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+name: Update lunch data
+
+on:
+  schedule:
+    # GitHub ActionsのcronはUTC。金曜09:00 UTC = 金曜18:00 JST。
+    - cron: "0 9 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-lunch-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Fetch all official menu workbooks
+        run: python fetch_lunch.py
+      - run: python -m unittest discover -s tests -p "test_*.py" -v
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run deploy:dry
+      - name: Commit updated data
+        shell: bash
+        run: |
+          git add data
+          if git diff --cached --quiet; then
+            echo "No data changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(data): update school lunch menus"
+          git push

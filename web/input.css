@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: light dark;
+    font-family: "Noto Sans JP", "BIZ UDPGothic", system-ui, sans-serif;
+  }
+
+  button,
+  select,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  select {
+    color-scheme: light;
+  }
+}
+
+@layer components {
+  .menu-card {
+    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900;
+  }
+
+  .menu-card-today {
+    @apply border-primary ring-2 ring-primary/30 dark:border-tertiary dark:ring-tertiary/30;
+  }
+
+  .menu-item {
+    @apply relative pl-4 leading-relaxed before:absolute before:left-0 before:top-[0.7em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-primary dark:before:bg-tertiary;
+  }
+
+  .tag-chip {
+    @apply inline-flex rounded-full bg-tertiary px-3 py-1 text-xs font-semibold text-secondary dark:bg-secondary dark:text-tertiary;
+  }
+
+}

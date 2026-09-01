@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "id": "middle-a",
+      "name": "中学校 Aブロック",
+      "level": "middle_school",
+      "block": "A",
+      "schools": [
+        "二中",
+        "八中",
+        "十一中",
+        "十三中",
+        "十四中",
+        "十八中"
+      ],
+      "source_url": "https://www.city.toyonaka.osaka.jp/kosodate/gakkou/kyushoku/kondate/chugaku_gimukou/tyugakuR8A.html",
+      "months": [
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    },
+    {
+      "id": "middle-b",
+      "name": "中学校 Bブロック",
+      "level": "middle_school",
+      "block": "B",
+      "schools": [
+        "九中",
+        "十二中",
+        "十五中",
+        "十六中",
+        "十七中"
+      ],
+      "source_url": "https://www.city.toyonaka.osaka.jp/kosodate/gakkou/kyushoku/kondate/chugaku_gimukou/tyugakuR8B.html",
+      "months": [
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    },
+    {
+      "id": "middle-c",
+      "name": "中学校 Cブロック",
+      "level": "middle_school",
+      "block": "C",
+      "schools": [
+        "一中",
+        "三中",
+        "四中",
+        "五中",
+        "庄内さくら学園（後期課程）"
+      ],
+      "source_url": "https://www.city.toyonaka.osaka.jp/kosodate/gakkou/kyushoku/kondate/chugaku_gimukou/tyugakuR8C.html",
+      "months": [
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    },
+    {
+      "id": "middle-yotsuba",
+      "name": "庄内よつば学園（後期課程）",
+      "level": "middle_school",
+      "block": "yotsuba_late",
+      "schools": [
+        "庄内よつば学園（後期課程）"
+      ],
+      "source_url": "https://www.city.toyonaka.osaka.jp/kosodate/gakkou/kyushoku/kondate/chugaku_gimukou/tyuugakuyotubakouki.html",
+      "months": [
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    },
+    {
+      "id": "elementary-a",
+      "name": "小学校 A献立",
+      "level": "elementary_school",
+      "block": "A",
+      "schools": [
+        "豊島",
+        "上野",
+        "東丘",
+        "刀根山",
+        "東豊台",
+        "箕輪",
+        "緑地",
+        "東泉丘",
+        "庄内さくら学園（前期課程）",
+        "豊南",
+        "南桜塚",
+        "北丘",
+        "西丘",
+        "高川",
+        "豊島北",
+        "野畑",
+        "新田南",
+        "蛍池",
+        "原田",
+        "庄内よつば学園（前期課程）"
+      ],
+      "source_url": "https://www.city.toyonaka.osaka.jp/kosodate/gakkou/kyushoku/kondate/shogaku_gimuzen/R8Akondate.html",
+      "months": [
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    },
+    {
+      "id": "elementary-b",
+      "name": "小学校 B献立",
+      "level": "elementary_school",
+      "block": "B",
+      "schools": [
+        "桜塚",
+        "大池",
+        "熊野田",
+        "中豊島",
+        "小曽根",
+        "南丘",
+        "泉丘",
+        "少路",
+        "北条",
+        "北緑丘",
+        "克明",
+        "桜井谷",
+        "新田",
+        "東豊中",
+        "豊島西",
+        "寺内",
+        "桜井谷東"
+      ],
+      "source_url": "https://www.city.toyonaka.osaka.jp/kosodate/gakkou/kyushoku/kondate/shogaku_gimuzen/R8Bkondate.html",
+      "months": [
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ]
+    }
+  ]
+}

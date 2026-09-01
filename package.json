@@ -1,0 +1,39 @@
+{
+  "name": "toyonaka-school-lunch",
+  "version": "1.0.0",
+  "description": "豊中市の学校給食予定献立表を月別JSONへ変換し、Web UIとAPIで提供します。",
+  "private": true,
+  "license": "MIT",
+  "author": "Tomoya Ogawa",
+  "homepage": "https://toyonaka-lunch.ogtm.dev/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ogatomo21/toyonaka-school-lunch.git"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:assets && npm run build:css",
+    "build:assets": "node scripts/build-assets.mjs",
+    "build:css": "tailwindcss -i ./web/input.css -o ./dist/styles.css --minify",
+    "check": "npm run types:check && tsc --noEmit",
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:dry": "npm run build && wrangler deploy --dry-run",
+    "dev": "npm run build && wrangler dev --ip 0.0.0.0",
+    "test": "vitest run",
+    "types:check": "wrangler types --check",
+    "types:generate": "wrangler types"
+  },
+  "dependencies": {
+    "hono": "4.13.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.0",
+    "tailwindcss": "3.4.19",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11",
+    "wrangler": "4.127.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
