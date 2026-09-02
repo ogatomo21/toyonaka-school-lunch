@@ -44,6 +44,10 @@ const assets = {
 } as Fetcher;
 
 describe("Hono application", () => {
+  const expectJsonContentType = (response: Response) => {
+    expect(response.headers.get("content-type")).toBe("application/json; charset=utf-8");
+  };
+
   it("serves the web page through the assets binding", async () => {
     const response = await app.request("https://example.test/", {}, { ASSETS: assets });
     expect(response.status).toBe(200);
@@ -54,6 +58,7 @@ describe("Hono application", () => {
     const response = await app.request("https://example.test/api/sources", {}, { ASSETS: assets });
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual(sourceIndex);
+    expectJsonContentType(response);
     expect(response.headers.get("access-control-allow-origin")).toBe("*");
   });
 
@@ -70,7 +75,9 @@ describe("Hono application", () => {
     );
     expect(queryResponse.status).toBe(200);
     expect(await queryResponse.json()).toEqual(lunchDocument);
+    expectJsonContentType(queryResponse);
     expect(pathResponse.status).toBe(200);
+    expectJsonContentType(pathResponse);
   });
 
   it("rejects invalid parameters and returns JSON 404 errors", async () => {
@@ -85,8 +92,16 @@ describe("Hono application", () => {
       { ASSETS: assets }
     );
     expect(invalid.status).toBe(400);
+    expectJsonContentType(invalid);
     expect(missing.status).toBe(404);
+    expectJsonContentType(missing);
     const missingBody = (await missing.json()) as { error: { code: string } };
     expect(missingBody.error.code).toBe("not_found");
+  });
+
+  it("returns the API description with an explicit UTF-8 JSON content type", async () => {
+    const response = await app.request("https://example.test/api", {}, { ASSETS: assets });
+    expect(response.status).toBe(200);
+    expectJsonContentType(response);
   });
 });
