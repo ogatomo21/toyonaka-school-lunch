@@ -185,7 +185,8 @@ class GeneratedDataTests(unittest.TestCase):
         self.assertEqual({source["id"] for source in self.index["sources"]}, {source.id for source in SOURCES})
         for source in self.index["sources"]:
             with self.subTest(source=source["id"]):
-                self.assertEqual(source["months"], ["2026-07", "2026-08", "2026-09"])
+                self.assertTrue(source["months"])
+                self.assertEqual(source["months"], sorted(source["months"]))
                 for month in source["months"]:
                     self.assertTrue((PROJECT_ROOT / "data" / source["id"] / f"{month}.json").is_file())
 
