@@ -1,3 +1,5 @@
+import { buildWeekdayCalendar } from "./calendar.js";
+
 const sourceSelect = document.querySelector("#source-select");
 const monthSelect = document.querySelector("#month-select");
 const todayButton = document.querySelector("#today-button");
@@ -6,12 +8,20 @@ const sourceLink = document.querySelector("#source-link");
 const menuPeriod = document.querySelector("#menu-period");
 const statusElement = document.querySelector("#status");
 const menuList = document.querySelector("#menu-list");
+const gridViewButton = document.querySelector("#grid-view-button");
+const calendarViewButton = document.querySelector("#calendar-view-button");
 const DEFAULT_SOURCE_ID = "middle-a";
 const SOURCE_STORAGE_KEY = "lunch-source";
+const VIEW_STORAGE_KEY = "lunch-view";
+const GRID_VIEW = "grid";
+const CALENDAR_VIEW = "calendar";
+const WEEKDAYS = ["月", "火", "水", "木", "金"];
 
 const state = {
   sources: [],
-  selectedSource: null
+  selectedSource: null,
+  lunchDocument: null,
+  view: GRID_VIEW
 };
 
 const readSavedSource = () => {
@@ -27,6 +37,23 @@ const saveSource = (sourceId) => {
     localStorage.setItem(SOURCE_STORAGE_KEY, sourceId);
   } catch {
     // 保存領域が利用できない環境でも、献立表示は継続する。
+  }
+};
+
+const readSavedView = () => {
+  try {
+    const savedView = localStorage.getItem(VIEW_STORAGE_KEY);
+    return savedView === CALENDAR_VIEW ? CALENDAR_VIEW : GRID_VIEW;
+  } catch {
+    return GRID_VIEW;
+  }
+};
+
+const saveView = (view) => {
+  try {
+    localStorage.setItem(VIEW_STORAGE_KEY, view);
+  } catch {
+    // 保存領域が利用できない環境でも、表示切替は継続する。
   }
 };
 
@@ -55,6 +82,7 @@ const formatMonth = (value) => {
 };
 
 const setStatus = (message, isError = false) => {
+  state.lunchDocument = null;
   statusElement.textContent = message;
   statusElement.classList.toggle("text-danger", isError);
   statusElement.classList.remove("hidden");
@@ -97,12 +125,91 @@ const renderDay = (day) => {
   return card;
 };
 
-const renderLunches = (lunchDocument) => {
-  statusElement.classList.add("hidden");
-  menuPeriod.textContent = `${formatMonth(`${lunchDocument.year}-${String(lunchDocument.month).padStart(2, "0")}`)}・${lunchDocument.days.length}日分`;
+const renderGrid = (lunchDocument) => {
+  menuList.className = "menu-grid";
   const fragment = document.createDocumentFragment();
   lunchDocument.days.forEach((day) => fragment.append(renderDay(day)));
   menuList.replaceChildren(fragment);
+};
+
+const renderCalendar = (lunchDocument) => {
+  menuList.className = "calendar-scroll";
+  const calendar = createElement("div", "weekday-calendar");
+  calendar.setAttribute("role", "grid");
+  calendar.setAttribute("aria-label", `${lunchDocument.year}年${lunchDocument.month}月の平日カレンダー`);
+  const headerRow = createElement("div", "calendar-row calendar-header");
+  headerRow.setAttribute("role", "row");
+  WEEKDAYS.forEach((weekday) => {
+    const heading = createElement("div", "calendar-weekday", weekday);
+    heading.setAttribute("role", "columnheader");
+    headerRow.append(heading);
+  });
+  calendar.append(headerRow);
+
+  const daysByDate = new Map(lunchDocument.days.map((day) => [day.date, day]));
+  const calendarDays = buildWeekdayCalendar(lunchDocument.year, lunchDocument.month);
+  for (let index = 0; index < calendarDays.length; index += WEEKDAYS.length) {
+    const weekRow = createElement("div", "calendar-row");
+    weekRow.setAttribute("role", "row");
+
+    calendarDays.slice(index, index + WEEKDAYS.length).forEach((calendarDay) => {
+      if (!calendarDay) {
+        const spacer = createElement("div", "calendar-spacer");
+        spacer.setAttribute("role", "gridcell");
+        spacer.setAttribute("aria-hidden", "true");
+        weekRow.append(spacer);
+        return;
+      }
+
+      const day = daysByDate.get(calendarDay.dateValue);
+      if (day) {
+        const card = renderDay(day);
+        card.classList.add("calendar-card");
+        card.setAttribute("role", "gridcell");
+        weekRow.append(card);
+      } else {
+        const emptyDay = createElement("div", "calendar-empty");
+        emptyDay.setAttribute("role", "gridcell");
+        emptyDay.setAttribute("aria-label", `${lunchDocument.month}月${calendarDay.date}日：献立なし`);
+        emptyDay.append(createElement("p", "calendar-empty-date", `${calendarDay.date}日`));
+        emptyDay.append(createElement("p", "calendar-empty-label", "献立なし"));
+        weekRow.append(emptyDay);
+      }
+    });
+
+    calendar.append(weekRow);
+  }
+
+  menuList.replaceChildren(calendar);
+};
+
+const updateViewSwitcher = () => {
+  const isGrid = state.view === GRID_VIEW;
+  gridViewButton.setAttribute("aria-pressed", String(isGrid));
+  calendarViewButton.setAttribute("aria-pressed", String(!isGrid));
+};
+
+const renderCurrentView = () => {
+  updateViewSwitcher();
+  if (!state.lunchDocument) return;
+  if (state.view === CALENDAR_VIEW) {
+    renderCalendar(state.lunchDocument);
+  } else {
+    renderGrid(state.lunchDocument);
+  }
+};
+
+const selectView = (view) => {
+  state.view = view === CALENDAR_VIEW ? CALENDAR_VIEW : GRID_VIEW;
+  saveView(state.view);
+  renderCurrentView();
+};
+
+const renderLunches = (lunchDocument) => {
+  statusElement.classList.add("hidden");
+  menuPeriod.textContent = `${formatMonth(`${lunchDocument.year}-${String(lunchDocument.month).padStart(2, "0")}`)}・${lunchDocument.days.length}日分`;
+  state.lunchDocument = lunchDocument;
+  renderCurrentView();
 };
 
 const loadLunches = async () => {
@@ -143,6 +250,8 @@ const selectSource = (sourceId, preferredMonth) => {
 };
 
 const initialize = async () => {
+  state.view = readSavedView();
+  updateViewSwitcher();
   try {
     const index = await fetchJson("/api/sources");
     state.sources = index.sources;
@@ -173,5 +282,7 @@ const initialize = async () => {
 sourceSelect.addEventListener("change", () => selectSource(sourceSelect.value, currentMonth()));
 monthSelect.addEventListener("change", () => void loadLunches());
 todayButton.addEventListener("click", () => selectSource(sourceSelect.value, currentMonth()));
+gridViewButton.addEventListener("click", () => selectView(GRID_VIEW));
+calendarViewButton.addEventListener("click", () => selectView(CALENDAR_VIEW));
 
 void initialize();
