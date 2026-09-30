@@ -24,20 +24,26 @@
       </div>
     </header>
 
-    <main class="mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-6">
+    <main class="mx-auto max-w-screen-2xl px-4 py-5 sm:px-6 sm:py-6">
       <p id="source-description" class="mb-4 text-xs leading-relaxed text-slate-500 dark:text-slate-400">取得元を読み込んでいます。</p>
 
       <section aria-labelledby="menu-heading">
-        <div class="mb-4 flex items-center justify-between gap-4">
+        <div class="mb-4 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p id="menu-period" class="text-sm font-semibold text-primary dark:text-tertiary"></p>
             <h2 id="menu-heading" class="text-2xl font-bold">給食予定</h2>
           </div>
-          <a id="source-link" class="hidden text-sm font-semibold text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary dark:text-tertiary" target="_blank" rel="noopener noreferrer">豊中市の原資料</a>
+          <div class="flex flex-wrap items-center justify-end gap-3">
+            <div class="view-switcher" role="group" aria-label="献立の表示形式">
+              <button id="grid-view-button" class="view-switcher-button" type="button" aria-pressed="true">グリッド</button>
+              <button id="calendar-view-button" class="view-switcher-button" type="button" aria-pressed="false">カレンダー</button>
+            </div>
+            <a id="source-link" class="hidden text-sm font-semibold text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary dark:text-tertiary" target="_blank" rel="noopener noreferrer">豊中市の原資料</a>
+          </div>
         </div>
 
         <p id="status" class="rounded-2xl border border-slate-200 bg-white px-5 py-6 text-center text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300" role="status" aria-live="polite">読み込み中です。</p>
-        <div id="menu-list" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
+        <div id="menu-list"></div>
       </section>
     </main>
 

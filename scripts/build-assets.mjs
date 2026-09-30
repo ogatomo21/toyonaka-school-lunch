@@ -9,6 +9,7 @@ await mkdir(outputDirectory, { recursive: true });
 await Promise.all([
   cp(new URL("index.html", webDirectory), new URL("index.html", outputDirectory)),
   cp(new URL("app.js", webDirectory), new URL("app.js", outputDirectory)),
+  cp(new URL("calendar.js", webDirectory), new URL("calendar.js", outputDirectory)),
   cp(new URL("robots.txt", webDirectory), new URL("robots.txt", outputDirectory)),
   cp(new URL("sitemap.xml", webDirectory), new URL("sitemap.xml", outputDirectory)),
   cp(dataDirectory, new URL("data/", outputDirectory), { recursive: true })
