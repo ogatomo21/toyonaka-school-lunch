@@ -60,6 +60,10 @@
     @apply grid min-w-[64rem] grid-cols-5 gap-2;
   }
 
+  .calendar-row {
+    @apply col-span-5 grid grid-cols-subgrid gap-2;
+  }
+
   .calendar-weekday {
     @apply sticky top-0 rounded-lg bg-primary px-3 py-2 text-center text-sm font-bold text-white dark:bg-secondary dark:text-tertiary;
   }

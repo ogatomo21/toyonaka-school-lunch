@@ -137,37 +137,48 @@ const renderCalendar = (lunchDocument) => {
   const calendar = createElement("div", "weekday-calendar");
   calendar.setAttribute("role", "grid");
   calendar.setAttribute("aria-label", `${lunchDocument.year}年${lunchDocument.month}月の平日カレンダー`);
+  const headerRow = createElement("div", "calendar-row calendar-header");
+  headerRow.setAttribute("role", "row");
   WEEKDAYS.forEach((weekday) => {
     const heading = createElement("div", "calendar-weekday", weekday);
     heading.setAttribute("role", "columnheader");
-    calendar.append(heading);
+    headerRow.append(heading);
   });
+  calendar.append(headerRow);
 
   const daysByDate = new Map(lunchDocument.days.map((day) => [day.date, day]));
-  buildWeekdayCalendar(lunchDocument.year, lunchDocument.month).forEach((calendarDay) => {
-    if (!calendarDay) {
-      const spacer = createElement("div", "calendar-spacer");
-      spacer.setAttribute("role", "gridcell");
-      spacer.setAttribute("aria-hidden", "true");
-      calendar.append(spacer);
-      return;
-    }
+  const calendarDays = buildWeekdayCalendar(lunchDocument.year, lunchDocument.month);
+  for (let index = 0; index < calendarDays.length; index += WEEKDAYS.length) {
+    const weekRow = createElement("div", "calendar-row");
+    weekRow.setAttribute("role", "row");
 
-    const day = daysByDate.get(calendarDay.dateValue);
-    if (day) {
-      const card = renderDay(day);
-      card.classList.add("calendar-card");
-      card.setAttribute("role", "gridcell");
-      calendar.append(card);
-    } else {
-      const emptyDay = createElement("div", "calendar-empty");
-      emptyDay.setAttribute("role", "gridcell");
-      emptyDay.setAttribute("aria-label", `${lunchDocument.month}月${calendarDay.date}日：献立なし`);
-      emptyDay.append(createElement("p", "calendar-empty-date", `${calendarDay.date}日`));
-      emptyDay.append(createElement("p", "calendar-empty-label", "献立なし"));
-      calendar.append(emptyDay);
-    }
-  });
+    calendarDays.slice(index, index + WEEKDAYS.length).forEach((calendarDay) => {
+      if (!calendarDay) {
+        const spacer = createElement("div", "calendar-spacer");
+        spacer.setAttribute("role", "gridcell");
+        spacer.setAttribute("aria-hidden", "true");
+        weekRow.append(spacer);
+        return;
+      }
+
+      const day = daysByDate.get(calendarDay.dateValue);
+      if (day) {
+        const card = renderDay(day);
+        card.classList.add("calendar-card");
+        card.setAttribute("role", "gridcell");
+        weekRow.append(card);
+      } else {
+        const emptyDay = createElement("div", "calendar-empty");
+        emptyDay.setAttribute("role", "gridcell");
+        emptyDay.setAttribute("aria-label", `${lunchDocument.month}月${calendarDay.date}日：献立なし`);
+        emptyDay.append(createElement("p", "calendar-empty-date", `${calendarDay.date}日`));
+        emptyDay.append(createElement("p", "calendar-empty-label", "献立なし"));
+        weekRow.append(emptyDay);
+      }
+    });
+
+    calendar.append(weekRow);
+  }
 
   menuList.replaceChildren(calendar);
 };
